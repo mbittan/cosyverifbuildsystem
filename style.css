@@ -1,9 +1,13 @@
 body{
     background-color:#C0FFAD;
     font-size:16px;
+    margin-top:10px;
+margin-left:10px;
+margin-right:10px;
+margin-bottom:10px;
 }
 div {
-    padding:1px 0;
+    padding:1px;
 }
 a {
     color : darkcyan;
@@ -121,7 +125,7 @@ border-radius:0px 0px 5px 0px;
     margin-top: -4px;
     margin-left:-5px;
     margin-bottom:5px;
-width:100px;
+    width:100px;
     background-image:url(images/ex.png);
     background-repeat: no-repeat;
     background-position:center left;
@@ -131,7 +135,6 @@ width:100px;
     text-align:justify;
     width: 781px;
     margin-left: 210px;
-    margin-right:10px;
     background-color: lightgray;
     color:black;
     border:1px solid black;
@@ -160,7 +163,7 @@ width:100px;
     border: 1px solid black;
     text-align:center;
     clear:both;
-    margin-top:5px;
+    margin-top:10px;
 }
 #footer p
 {
