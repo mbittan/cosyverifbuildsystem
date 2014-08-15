@@ -53,39 +53,56 @@
 	<ul style='list-style-type:decimal;'>
 	  <li>
 	    <em>Binary packages</em>:<br />
-	    This concerns the packages that contains binary files. They depend on the architecture they were built on. They're generally named according to the following pattern: &lt;package_name&gt;_&lt;version&gt;-1_&lt;arch&gt;.deb
+	    This concerns the packages that contains binary files. They depend on the architecture they were built on. They're generally named according to the following pattern: <span class='courier'>&lt;package_name&gt;_&lt;version&gt;-1_&lt;arch&gt;.deb</span>
 	  </li>
 	  <li>
 	    <em>Library packages</em>:<br />
 	    This packages concerns libraries and headers files. Library packages can be divided into two categories :
 	    <ul style='list-style-type:lower-roman;'>
-	      <li>The first category of library packages concerns the ones which only contains libraries. They're named according to the following pattern: &lt;package_name&gt;_&lt;version&gt;-1_&lt;arch&gt;.deb. Usually, the name of the package contains 'lib', but it's not mandatory.</li>
-	      <li>The second category concerns the packages that only contains header files. Those packages are named according to the following pattern: &lt;package_name&gt;-dev_&lt;version&gt;-1_&lt;arch&gt;.deb.
+	      <li>The first category of library packages concerns the ones which only contains libraries. They're named according to the following pattern: <span class='courier'>&lt;package_name&gt;_&lt;version&gt;-1_&lt;arch&gt;.deb</span>. Usually, the name of the package contains 'lib', but it's not mandatory.</li>
+	      <li>The second category concerns the packages that only contains header files. Those packages are named according to the following pattern: <span class='courier'>&lt;package_name&gt;-dev_&lt;version&gt;-1_&lt;arch&gt;.deb.</span></li>
 	    </ul>
 	  </li>
 	  <li>
 	    <em>Arch-Independant packages</em>:<br />
+	    Those packages contains files that don't depend on the architecture on which the package was built. This category of files includes images, scripts, configuration files, ...
 	  </li>
 	  <li>
 	    <em>Sources packages</em>:<br />
+	    Sources packages are actually composed of two files : a <span class='courier'>.dsc</span> file which describe the package, and a tarball (an archive which format usually is <span class='courier'>.tar.[gbx]z</span>). This type of package allows you to build one of the three other types, and is usually generated during a package's build. 
 	  </li>
-
+	</ul>
+	<p>
+	  Building packages is usually quite difficult. That's why we've created buildeb, a shell script that will help you build packages easily.
+	</p>
+	<h2><a id='buildeb'></a>Introduction to buildeb</h2>
+	<p>
+	  The purpose of buildeb is to help you create packages. In order to download it, you have to <a href='use_cosy_repo.html'>add the CosyVerif repository to your sources.list</a>. You can also clone the following git repository: <a href="https://github.com/CosyVerif/deb-base/">https://github.com/CosyVerif/deb-base</a>. However, in that case there's a few things you need to know. If you clone the git repository, you'll need to put the perl scripts (i.e. the files located in <span class='courier'>scripts/*.pl</span>) in the directory where you'll launch buildeb. So, it's probably better to just install the buildeb package.
+	</p>
+	
+	<p>
+	  If you want to use buildeb, your project needs to follow some rules. You'll find them below.
+	</p>
+	<h4><a id='requirements'></a>Requirements</h4>
+	<p>
+	  Here's the list of the dependencies of buildeb:
+	</p>
+	<ul style='list-style-type:square;'>
+	  <li></li>
 	</ul>
       </div>
       <div id='footer'>
-
 	  Created by <a href='mailto:maxime.bittan@gmail.com'>Maxime Bittan </a>
-	<p>
-	  <a href="http://validator.w3.org/check?uri=referer">
-	    <img  src="images/valid-xhtml11" alt="Valid XHTML 1.1" height="31" width="88" />
-	  </a>
-	  <a href="http://jigsaw.w3.org/css-validator/check/referer">
-	    <img style="border:0;width:88px;height:31px"
-           src="images/vcss"
-		 alt="Valid CSS!" />
-	  </a>
-	  
-	</p>
+	  <p>
+	    <a href="http://validator.w3.org/check?uri=referer">
+	      <img  src="images/valid-xhtml11" alt="Valid XHTML 1.1" height="31" width="88" />
+	    </a>
+	    <a href="http://jigsaw.w3.org/css-validator/check/referer">
+	      <img style="border:0;width:88px;height:31px"
+		   src="images/vcss"
+		   alt="Valid CSS!" />
+	    </a>
+	  </p>
       </div>
   </body>
 </html>
