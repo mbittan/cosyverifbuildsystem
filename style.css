@@ -1,7 +1,6 @@
 body{
     background-color:#C0FFAD;
     font-size:16px;
-    margin-left:5px;
 }
 div {
     padding:1px 0;
@@ -132,6 +131,7 @@ width:100px;
     text-align:justify;
     width: 781px;
     margin-left: 210px;
+    margin-right:10px;
     background-color: lightgray;
     color:black;
     border:1px solid black;
