@@ -208,7 +208,8 @@ color:#60C04D;
     font-family:Courier;
     margin-bottom:10px;
     color:white;
-font-weight:bold;
+    font-weight:bold;
+font-size:15px;
 }
 
 h4 {
@@ -223,4 +224,11 @@ font-size:15px;
 font-family:Courier;
 color:white;
 font-weight:bold;
+}
+
+.courier
+{
+    font-family:Courier;
+    font-weight:bold;
+    font-size:15px;
 }
