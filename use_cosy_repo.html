@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" 
+	  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="style.css" media="screen"/>
+    <title>CosyVerif Build System</title>
+  </head>
+  <body>
+    <div id='head'>
+
+      <a href='index.html'><img src='images/t3.png' alt=''/></a>
+
+    </div>
+        <div>  
+      <ul id='menu'>
+	<li id='title'>Menu</li>
+	<li><a href="build_system.html" id='first'>Build System</a></li>
+	<li>
+	  <a href="build_packages.html">Building Packages</a>
+	</li>
+	<li><a href='build_jenkins.html'>Building on Jenkins</a></li>
+	<li><a href='create_vm.html'>Creating VMs</a></li>
+	<li><a href='faq.html'>F.A.Q.</a></li>
+      </ul>
+    </div>
+
+      <div id="main">
+	<h1>How to download packages from the CosyVerif repository</h1>
+	<p>
+	  If you want to download packages from the CosyVerif repository using apt-get, here's what you have to do. <span style='color:red;'>You have to be root to execute the following commands</span>.
+	</p>
+	<p>
+	  First, you have to modify the file located in '/etc/apt/sources.list'. You have to add, at the end of the file, the following line :
+	</p>
+	<div class='code'>
+	  deb http://cosyverif-debian.lip6.fr/ SUITE
+	</div>
+	<p>
+	  You have to modify SUITE by one of the following, according to what debian system you use (If you're not using debian, just put 'jessie-testing/') :
+	</p>
+	
+	<ul>
+	  <li>jessie-testing/</li>
+	  <li>sid-unstable/</li>
+	  <li>wheezy-stable</li>
+	</ul>
+
+	<p>
+	  Then, you have to execute the following command in order to add the key that has authenticated the packages :
+	</p>
+	<div class='code'>
+	  wget -O - http://cosyverif-debian.lip6.fr/gpgkey | sudo apt-key add -
+	</div>
+	<p>
+	  Finally, you have to do an <span class='code2'>apt-get update</span> and you can download packages from the CosyVerif repository.
+	</p>
+      </div>
+      <div id='footer'>
+	  Created by <a href='mailto:maxime.bittan@gmail.com'>Maxime Bittan </a>
+	<p>
+	  <a href="http://validator.w3.org/check?uri=referer">
+	    <img  src="images/valid-xhtml11" alt="Valid XHTML 1.1" height="31" width="88" />
+	  </a>
+	  <a href="http://jigsaw.w3.org/css-validator/check/referer">
+	    <img style="border:0;width:88px;height:31px"
+           src="images/vcss"
+		 alt="Valid CSS!" />
+	  </a>
+	  
+	</p>
+      </div>
+  </body>
+</html>

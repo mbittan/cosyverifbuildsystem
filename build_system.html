@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" 
+	  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="style.css" media="screen"/>
+    <title>CosyVerif Build System</title>
+  </head>
+  <body>
+    <div id='head'>
+      <a href='index.html'><img src='images/t3.png' alt=''/></a>
+    </div>
+        <div>  
+      <ul id='menu'>
+	<li id='title'>Menu</li>
+	<li><a href="build_system.html" id='first'>Build System</a></li>
+	<li>
+	  <a href="build_packages.html">Building Packages</a>
+	</li>
+	<li><a href='build_jenkins.html'>Building on Jenkins</a></li>
+	<li><a href='create_vm.html'>Creating VMs</a></li>
+	<li><a href='faq.html'>F.A.Q.</a></li>
+      </ul>
+    </div>
+
+      <div id="main">
+	<h1>The Build System</h1>
+	<p>
+	  The build system of cosyverif is organized according to the following
+	  image.
+	</p>
+	<p style='text-align:center;'>
+	  <img src='images/buildcosy.png' alt="CosyVerif's Build System" width='600' />
+	</p>
+	<p>
+	  In order to understand how this system works, I'm going to explain everything that happens during a typical build (i.e. when you use the script <span style='font-weight:bold;'><a href='build_jenkins.html'>create_packages</a></span> to build your project and packages of it).<br/>
+	  First, you have to configure Jenkins so that it will automatically detects when there is a change in your source code, and build your project. (Or make your VCS notify Jenkins there's a change in the source code, which is actually the best way to do it).<br />
+	  So, here's what happens when Jenkins decides it's time to build your program (or you tell him to). Jenkins will tell one of the slave machines to download and build your project. In our case, the slave machines are virtual machines.
+	  Once the said slave machine has downloaded the source code of your program, it will try to build your project on the following systems :
+	</p>
+	  <ul>
+	    <li>Debian stable i386</li>
+	    <li>Debian stable amd64</li>
+	    <li>Debian testing i386</li>
+	    <li>Debian testing amd64</li>
+	    <li>Debian unstable i386</li>
+	    <li>Debian unstable amd64</li>
+	  </ul>
+	<p>
+	  These builds are done on a minimal Debian system which is on a docker image. Although this seems to be a lot, this is mandatory to check if the user has correctly filled the section of the configuration file regarding the dependencies of his project (and also to check if the project builds normally, assuming the dependencies are filled correctly). Even if the dependencies are filled correctly, one or more builds may fail because some dependencies aren't available on every Debian system. This is not a big deal because if one build fails, it only means that we won't be able to create packages for that system. So, unless all 6 builds fails, the building process will continue. 
+	</p>
+	<p>
+	  Now, if one or more builds have been successful, the script will try to build packages of your project for those systems, according to the configuration file you've filled. If one or more packages have been created, they're automatically uploaded on the CosyVerif Repository.
+	</p>
+
+	<p>
+	  If you're interested by that architecture and you want to have something similar, there's a script that will help you create a slave machine and a repository, with all the programs installed and configured. <a href='create_buildcosy.html'>Here's how to install it and use it</a>.
+	</p>
+      </div>
+      <div id='footer'>
+
+	  Created by <a href='mailto:maxime.bittan@gmail.com'>Maxime Bittan </a>
+	<p>
+	  <a href="http://validator.w3.org/check?uri=referer">
+	    <img  src="images/valid-xhtml11" alt="Valid XHTML 1.1" height="31" width="88" />
+	  </a>
+	  <a href="http://jigsaw.w3.org/css-validator/check/referer">
+	    <img style="border:0;width:88px;height:31px"
+           src="images/vcss"
+		 alt="Valid CSS!" />
+	  </a>
+	  
+	</p>
+      </div>
+  </body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" 
+	  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="style.css" media="screen"/>
+    <title>CosyVerif Build System</title>
+  </head>
+  <body>
+    <div id='head'>
+      <a href='index.html'><img src='images/t3.png' alt=''/></a>
+    </div>
+    <div>  
+      <ul id='menu'>
+	<li id='title'>Menu</li>
+	<li><a href="build_system.html" id='first'>Build System</a></li>
+	<li>
+	  <a href="build_packages.html">Building Packages</a>
+	</li>
+	<li><a href='build_jenkins.html'>Building on Jenkins</a></li>
+	<li><a href='create_vm.html'>Creating VMs</a></li>
+	<li><a href='faq.html'>F.A.Q.</a></li>
+      </ul>
+    </div>
+
+      <div id="main">
+	<h1>How to build packages using buildeb</h1>
+	<p>
+	  Here's what you will find on this page :
+	</p>
+	<ul>
+	  <li><a href="#intro">Introduction to Debian packages</a></li>
+	  <li>
+	    <a href="#buildeb">Introduction to buildeb</a>
+	    <ul>
+	      <li><a href="#requirements">Requirements</a></li>
+	      <li><a href="#configfile">The configuration file</a></li>
+	      <li><a href="#options">buildeb's options</a></li>
+	    </ul>
+	  </li>
+	</ul>
+	<h2><a id="intro"></a>Introduction to Debian packages</h2>
+	<p>
+	  Debian packages are <strong><em>ar</em></strong> archives that contains normally two files :
+	</p>
+	<ul>
+	  <li><strong>control.tar.gz</strong>: This archive contains informations about the package (version, dependencies, descriptions, ...).</li>
+	  <li><strong>data.tar.gz</strong>: This archive contains all the files that will be installed.</li>
+	</ul>
+	<p>
+	  There are mainly 4 types of packages (or at least, there's 4 of them that will interest us here) :
+	  </p>
+	<ul style='list-style-type:decimal;'>
+	  <li>
+	    <em>Binary packages</em>:<br />
+	    This concerns the packages that contains binary files. They depend on the architecture they were built on. They're generally named according to the following pattern: &lt;package_name&gt;_&lt;version&gt;-1_&lt;arch&gt;.deb
+	  </li>
+	  <li>
+	    <em>Library packages</em>:<br />
+	    This packages concerns libraries and headers files. Library packages can be divided into two categories :
+	    <ul style='list-style-type:lower-roman;'>
+	      <li>The first category of library packages concerns the ones which only contains libraries. They're named according to the following pattern: &lt;package_name&gt;_&lt;version&gt;-1_&lt;arch&gt;.deb. Usually, the name of the package contains 'lib', but it's not mandatory.</li>
+	      <li>The second category concerns the packages that only contains header files. Those packages are named according to the following pattern: &lt;package_name&gt;-dev_&lt;version&gt;-1_&lt;arch&gt;.deb.
+	    </ul>
+	  </li>
+	  <li>
+	    <em>Arch-Independant packages</em>:<br />
+	  </li>
+	  <li>
+	    <em>Sources packages</em>:<br />
+	  </li>
+
+	</ul>
+      </div>
+      <div id='footer'>
+
+	  Created by <a href='mailto:maxime.bittan@gmail.com'>Maxime Bittan </a>
+	<p>
+	  <a href="http://validator.w3.org/check?uri=referer">
+	    <img  src="images/valid-xhtml11" alt="Valid XHTML 1.1" height="31" width="88" />
+	  </a>
+	  <a href="http://jigsaw.w3.org/css-validator/check/referer">
+	    <img style="border:0;width:88px;height:31px"
+           src="images/vcss"
+		 alt="Valid CSS!" />
+	  </a>
+	  
+	</p>
+      </div>
+  </body>
+</html>

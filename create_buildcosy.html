@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" 
+	  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="style.css" media="screen"/>
+    <title>CosyVerif Build System</title>
+  </head>
+  <body>
+    <div id='head'>
+      <a href='index.html'><img src='images/t3.png' alt=''/></a>
+
+    </div>
+    <div>  
+      <ul id='menu'>
+	<li id='title'>Menu</li>
+	<li><a href="build_system.html" id='first'>Build System</a></li>
+	<li>
+	  <a href="build_packages.html">Building Packages</a>
+	</li>
+	<li><a href='build_jenkins.html'>Building on Jenkins</a></li>
+	<li><a href='create_vm.html'>Creating VMs</a></li>
+	<li><a href='faq.html'>F.A.Q.</a></li>
+      </ul>
+    </div>
+
+      <div id="main">
+	<h1>How to create a CosyVerif-like build system</h1>
+	<p>
+	  In order to create a build system similar to the one CosyVerif has, you'll first have to clone the following git repository, where is located all the scripts and files you need to create a Jenkins slave and a debian repository properly configured : <a href='https://github.com/CosyVerif/images'>https://github.com/CosyVerif/images</a>
+	</p>
+	<p>
+	  Then, you have to download a package that is located in the CosyVerif repository. The name of this package is <em><strong>genvm</strong></em>. <a href='use_cosy_repo.html'>Here's how to download packages from the said repository</a>.
+	</p>
+	<p>
+	  Before executing anything, there are some files you need to edit in order to create the jenkins slave and the repository you want. 
+	</p>
+	<h4>1. The <span style='font-style:italic;'>authorized_keys</span> files</h4>
+	<p>
+	  There are two authorized_keys files. The first, which is located in <span class='code2'>data/home/jenkins/.ssh/authorized_keys</span>, is intended for the jenkins slave that you want to create. This is where you should put the public ssh key of the machine where Jenkins is installed, and others, if you want to. <br/>
+	  The second file is located in <span class="code2">data/home/repo/.ssh/authorized_keys</span>, and is for the repository that will be created.
+	</p>
+	<h4>2. The repository file (apache)</h4>
+	<p>
+	  Coming soon ...
+	</p>
+
+	<h4>3. The .dput.cf file</h4>
+	<p>
+	  Coming soon ...
+	</p>
+
+	<h4>4. The .mini-dinstall.conf file</h4>
+	<p>
+	  Coming soon ...
+	</p>
+
+	<h4>5. The gpg-keygen.conf file</h4>
+	<p>
+	  Coming soon ...
+	</p>
+	
+	<h4>Creating the VMs</h4>
+	<p>
+	  Now that all the above configuration files have been filled, you can use the script <strong><em>create_buildcosy</em></strong> to create the virtual machines that will contains the repository and the jenkins slave. Although this script does not require any argument, you might want to use some. Here is a list of all the options of that script :
+	</p>
+	  <ul>
+	    <li>
+	      <span style='font-family:Courier;color:darkcyan;font-weight:bold;'>-a &lt;arch&gt;, --architecture=ARCH, --arch=ARCH</span><br/>
+	      Architecture of the virtual machines that will be created. It can either be amd64 or i386. Default: amd64.
+	    </li>
+
+	    <li>
+	      <span style='font-family:Courier;color:darkcyan;font-weight:bold;'>-d &lt;dir&gt;, --directory=DIR, --dockerfiles-dir=DIR</span><br/>
+	      Directory where all the dockerfiles are located. Default: dockerfiles/.
+	    </li>
+
+	    <li>
+	      <span style='font-family:Courier;color:darkcyan;font-weight:bold;'>-D, --debug-mode</span><br/>
+	      Debug Mode
+	    </li>
+
+	    <li>
+	      <span style='font-family:Courier;color:darkcyan;font-weight:bold;'>-f &lt;format&gt;, --format=FORMAT, --vm-format=FORMAT, --format-vm=FORMAT</span><br/>
+	      Format of the virtual disk images that will be created. It have to be one of these values : vmdk, qcow, qcow2, raw. Default: vmdk.
+	    </li>
+
+	    <li>
+	      <span style='font-family:Courier;color:darkcyan;font-weight:bold;'>--slave-name=NAME, --jenkins-slave=NAME</span><br/>
+	      Name of the virtual disk image that will contain the jenkins slave. Default: jenkins-slave.&lt;format&gt;
+	    </li>
+
+	    <li>
+	      <span style='font-family:Courier;color:darkcyan;font-weight:bold;'>--repository-name=NAME, --repo-name=NAME</span><br/>
+	      Name of the virtual disk image that will contain the repository. Default: repository.&lt;format&gt;
+	    </li>
+
+	    <li>
+	      <span style='font-family:Courier;color:darkcyan;font-weight:bold;'>-s &lt;size&gt;, --size=SIZE, --vmsize=SIZE, --sizevm=SIZE</span><br/>
+	      Maximum size of the two virtual disk images. Default: 5G.
+	    </li>
+
+	    <li>
+	      <span style='font-family:Courier;color:darkcyan;font-weight:bold;'>-v &lt;version&gt;, --version=VERSION, --debian-version=VERSION, --release=VERSION</span><br/>
+	      Debian version on which both the jenkins slave and the repository will run. It must either be a release code name (squeeze, wheezy, ...) or a symbolic name (stable, testing, unstable, ...). Default: jessie.
+	    </li>
+	    <li>
+	      <span style='font-family:Courier;color:darkcyan;font-weight:bold;'>-V, --verbose, --verbose-mode</span><br/>
+	      Verbose mode.
+	    </li>
+	  </ul>
+
+	<p>
+	  Once the script has finished its execution (it may takes some time ...), you should have two virtual disk images. There's still some things you have to do. You have to launch the virtual machine which contains the jenkins slave and generate its ssh key. In order to do so, you have to execute the following command:
+	</p>
+	<div class='code'>
+	  ssh-keygen
+	</div>
+	<p>
+	  This command will ask you in which directory you want to put the key that will be generated. Choose the default value, which is something like <span class='code2'>/home/jenkins/.ssh</span>.
+	</p>
+	<p>
+	  When this is done, you have to put the content of the file named <span class='code2'>id_rsa.pub</span> in the authorized_keys file of the repository (located in <span class='code2'>/home/repo/.ssh/</span>). Then, you have to launch the jenkins slave, and connect to the repository via ssh. It's mandatory to do so, because during the first connection, ssh will ask you if the machine you want to connect to is the right one. And you don't want that to happen during a build.
+	</p>
+      </div>
+      
+      <div id='footer'>
+
+	  Created by <a href='mailto:maxime.bittan@gmail.com'>Maxime Bittan </a>
+	<p>
+	  <a href="http://validator.w3.org/check?uri=referer">
+	    <img  src="images/valid-xhtml11" alt="Valid XHTML 1.1" height="31" width="88" />
+	  </a>
+	  <a href="http://jigsaw.w3.org/css-validator/check/referer">
+	    <img style="border:0;width:88px;height:31px"
+           src="images/vcss"
+		 alt="Valid CSS!" />
+	  </a>
+	  
+	</p>
+      </div>
+  </body>
+</html>
