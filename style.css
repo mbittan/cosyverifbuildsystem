@@ -37,7 +37,7 @@ a {
 #title {
     border-radius:10px 10px 0px 0px;
     color:black;
-    background-image:url(images/menu.png);
+    background-image:linear-gradient(#60C04D 30%, darkgreen);
     margin-top:-4px;
     margin-left:-4px;
     margin-right:-4px;
