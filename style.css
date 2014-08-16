@@ -57,7 +57,7 @@ a {
 #menu li a 
 {
     border-radius:7px;
-    border: 1px solid black;
+    border: 1px solid lightgray;
     padding: 2px;
     text-decoration: none;
     color:#60c04b;
@@ -209,6 +209,7 @@ h2 {
     padding:3px;
     font-family:Courier;
     margin-bottom:10px;
+margin-top:5px;
     color:white;
     font-weight:bold;
     font-size:15px;
