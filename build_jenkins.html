@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" 
+	  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="style.css" media="screen"/>
+    <title>CosyVerif Build System</title>
+  </head>
+  <body>
+    <div id='head'>
+
+      <a href='index.html'><img src='images/t2.png' alt=''/></a>
+
+    </div>
+        <div>  
+      <ul id='menu'>
+	<li id='title'>Menu</li>
+	<li><a href="build_system.html" id='first'>Build System</a></li>
+	<li>
+	  <a href="build_packages.html">Building Packages</a>
+	</li>
+	<li><a href='build_jenkins.html'>Building on Jenkins</a></li>
+	<li><a href='create_vm.html'>Creating VMs</a></li>
+	<li><a href='faq.html'>F.A.Q.</a></li>
+      </ul>
+    </div>
+
+      <div id="main">
+	<h1>How to build your project on Jenkins</h1>
+	<p>
+	  We've created a script named 
+	  <span class='courier'>create_package</span> that will help you build 
+	  your project, and packages of it (this script is already installed on 
+	  every jenkins slave created with 
+	  <a href='create_buildcosy.html'><span class='courier'>
+	      create_buildcosy</span></a> 
+	  or 
+	  <a href='create_vm.html'><span class='courier'>
+	      create_imagevm</span></a>). In order to use this script you have 
+	  to <a href="build_packages.html#configfile">fill the configuration 
+	    file of buildeb</a> and put it somewhere in your git repository 
+	  (or whatever VCS you use). And you have to make sure that, when you run
+	  buildeb with that configuration file you've filled, it works.
+	</p>
+	<p>
+	  Here's how the script works. It will first try to build your project 
+	  on six minimal debian systems (stable (both 32bits and 64bits), 
+	  unstable (32bits &amp; 64bits) and  testing (32bits &amp; 64bits)), 
+	  to make sure that your source code compiles correctly and also to make
+	  sure that you've filled the build dependencies correctly. If all 
+	  builds fails, the script will terminate with an error. Otherwise, 
+	  it will continue to the next step.
+	</p>
+	<p>
+	  So, if a build has been successful on a system, it will try to 
+	  build packages of your project on it. If one or more packages 
+	  have been built, they're automatically uploaded on CosyVerif's 
+	  repository. 
+	</p>
+	<p>
+	  The script has some options you can use if you want to modify its 
+	  behaviour:
+	</p>
+	<ul>
+	  <li><span class='courier'>-c &lt;configuration_file&gt;</span>: 
+	    Path leading to the configuration file. The path must be relative
+	    to the root directory of your git repository</li>
+	  <li><span class='courier'>-d &lt;makefile_dir&gt;</span>: Path 
+	    leading to the directory containing the makefile of your 
+	    project. </li>
+	  <li><span class='courier'>-b</span>: Build only. It means that the 
+	    script won't build packages.</li>
+	  <li><span class='courier'>-p</span>: Packages only. It means that 
+	    the script won't try to build your project on minimal 
+	    debian system. It will directly try to build packages. </li>
+	</ul>
+
+	<p>
+	  Here's an example of how to use 
+	  <span class='courier'>create_package</span>
+	</p>
+	<div class='example'>
+	  <h4>Example</h4>
+	  Let's say that your git repository contains two directories : 
+	  <span class="courier">foo/</span> and 
+	  <span class="courier">bar/</span>. Your configuration files is 
+	  named <span class="courier">build_config.yml</span> and is located 
+	  in <span class="courier">foo/</span>. Your makefile is located in 
+	  <span class="courier">bar/</span>. 
+	  You should use <span class="courier">create_package</span> this way:
+	  <div class='code'>
+	    create_package -c foo/build_config.yml -d bar/
+	  </div>
+	  If you just want to build your project, without creating packages
+	  you should use it that way:
+	  <div class='code'>
+	    create_package -c foo/build_config.yml -d bar/ -b
+	  </div>
+	  If you just want to create packages:
+	  <div class='code'>
+	    create_package -c foo/build_config.yml -d bar/ -p
+	  </div>
+	</div>
+      </div>
+      <div id='footer'>
+	  Created by <a href='mailto:maxime.bittan@gmail.com'>Maxime Bittan </a>
+	<p style='margin-bottom:2px;'>
+	  <a href="http://validator.w3.org/check?uri=referer">
+	    <img  src="images/valid-xhtml11" alt="Valid XHTML 1.1" height="31" width="88" />
+	  </a>
+	  <a href="http://jigsaw.w3.org/css-validator/check/referer">
+	    <img style="border:0;width:88px;height:31px"
+           src="images/vcss"
+		 alt="Valid CSS!" />
+	  </a>
+	  
+	</p>
+      </div>
+  </body>
+</html>
