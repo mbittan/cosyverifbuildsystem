@@ -8,7 +8,7 @@
   </head>
   <body>
     <div id='head'>
-      <a href='index.html'><img src='images/t2.png' alt=''/ width='auto'></a>
+      <a href='index.html'><img src='images/t2.png' alt='' width='auto' /></a>
     </div>
     <div>  
       <ul id='menu'>
@@ -155,7 +155,7 @@
 	    <span class='courier' style='font-size:19px;color:darkblue;'>COPYRIGHT</span><br/>
 	    This field can be one the three following values:
 	    <ul>
-	      <li><span class='courier'>gpl,gpl2,gpl3,lgpl,lgpl2,lgpl3,artistic,apache,mit</span>: In that case, a generic copyright file will be generated. You have to fill the field <span class='courier'>DEVS</span> with the names of the developers that participated on your project, unless you have a file named <span class='courier'>AUTHORS</span> in the directory containing the Makefile.</li>
+	      <li><span class='courier'>gpl, gpl2, gpl3, lgpl, lgpl2, lgpl3, artistic, apache, mit</span>: In that case, a generic copyright file will be generated. You have to fill the field <span class='courier'>DEVS</span> with the names of the developers that participated on your project, unless you have a file named <span class='courier'>AUTHORS</span> in the directory containing the Makefile.</li>
 	      <li>A path leading to your own copyright file.</li>
 	      <li>Empty. In that case, if you have a file named <span class='courier'>COPYING</span> or <span class='courier'>LICENSE</span>, we will use it as the copyright file. If not, the copyright file will be empty.</li>
 	    </ul>
@@ -183,12 +183,11 @@
 	      </div>
 	      <p>
 		If you put something like that:
-
+	      </p>
 		<div class='code'>
 		  <span style='color:darkgoldenrod;'>PACKAGETYPE </span>: s s s
 		</div>
 		everything will work fine, but the script will only build one binary package.
-	      </p>
 	    </div>
 	    <div class='example'>
 	      <h4>Example 2</h4>
@@ -230,9 +229,9 @@
 	      Let's say that in order to build your project you need: gcc (version 4.7 or better), perl (version 5.16.0), autoconf (version 2.69 or lower) and make. Here's what you can write:
 	      <div class='code'>
 		<span style='color:darkgoldenrod;'>BUILDDEPENDS </span>: <br/>
-		<span style='margin-left:2em;'> - gcc (>= 4.7)</span><br/>
+		<span style='margin-left:2em;'> - gcc (&gt;= 4.7)</span><br/>
 		<span style='margin-left:2em;'> - perl (= 5.16.0)</span><br/>
-		<span style='margin-left:2em;'> - autoconf (<= 2.69)</span><br/>
+		<span style='margin-left:2em;'> - autoconf &lt;= 2.69)</span><br/>
 		<span style='margin-left:2em;'> - make</span>
 	      </div>
 	    </div>
@@ -268,12 +267,12 @@
 	      <h4>Example</h4>
 	      <p>
 		Let's say you want to include the binary file <span class='courier'>foo/bar</span> in the package, and you want it to be installed in the directory <span class='courier'>/usr/bin</span>. Let's say you also want to include the binaries <span class='courier'>foo/baz1</span>, <span class='courier'>foo/baz2</span>, and <span class='courier'>foo/bar3</span> in the package, and you want them to be installed in the directory <span class='courier'>/usr/local/bin</span>. Here's what you should do:
+	      </p>
 		<div class='code'>
 		  <span style='color:darkgoldenrod'> BINARYNAMES</span> :<br/>
 		  <span style='margin-left:2em;'> - foo/bar::usr/bin</span><br/>
 		  <span style='margin-left:2em;'> - foo/baz*::usr/local/bin</span>
 		</div>
-	      </p>
 	    </div>
 	  </li>
 	  <li>
@@ -346,6 +345,33 @@ Name of the arch independent files you want to include. Same as before.
 	    Homepage of your project.
 	  </li>
 	</ul>
+	<h4><a id="options"></a>buildeb's options</h4>
+	<p>
+	  Here are the list of options you can specify when calling buildeb:
+	</p>
+	<ul>
+	  <li><span class='courier'>-c &lt;configuration_file&gt;</span>: This option allows you to specify where your configuration file is located. You can omitthis option if your configuration file is located in the directory where you're executing buildeb, and its name is "build_config.yml". Otherwise, you have to use it.</li>
+	  <li><span class='courier'>-d &lt;makefile_dir&gt;</span>: Allows you to specify the path leading to the directory containing the Makefile. If your makefile is located where you're executing buildeb, you can omit this option. Otherwise, you should use it.</li>
+	  <li><span class='courier'>-l</span>: Don't clean the temporary files created by buildeb.</li>
+	  <li><span class='courier'>-g</span>: Generate a configuration file template (only if you've installed the debian package containing buildeb).</li>
+	  <li><span class='courier'>-t</span>: Stop the building process before creating the packages. It allows you to modify the debian's configuration files as you wish.</li>
+	  <li><span class='courier'>-V</span>: Verbose mode.</li>
+	  <li><span class='courier'>-D</span>: Debug mode.</li>
+	  <li><span class='courier'>-h</span>: Print help</li>
+	</ul>
+
+	<p>
+	  Here's an example of how to call buildeb:
+	</p>
+	<div class='example'>
+	  <h4>Example</h4>
+	  <p>
+	    Let's say that your configuration file is named <span class='courier'>conf.yml</span> and is located in <span class="courier">foo/bar/</span>. Your Makefile is located in <span class="courier">foo/baz/</span>. And let's say that you're in the directory <span class="courier">foo/</span>. You should call buildeb that way:
+	  </p>
+	  <div class="code">
+	      buildeb -c bar/conf.yml -d baz/
+	  </div>
+	</div>
       </div>
       
       <div id='footer'>
