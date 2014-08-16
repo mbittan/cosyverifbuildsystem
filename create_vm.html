@@ -1,0 +1,496 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" 
+	  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="style.css" media="screen"/>
+    <title>CosyVerif Build System</title>
+  </head>
+  <body>
+    <div id='head'>
+      <a href='index.html'><img src='images/t2.png' alt=''/></a>
+    </div>
+        <div>  
+      <ul id='menu'>
+	<li id='title'>Menu</li>
+	<li><a href="build_system.html" id='first'>Build System</a></li>
+	<li>
+	  <a href="build_packages.html">Building Packages</a>
+	</li>
+	<li><a href='build_jenkins.html'>Building on Jenkins</a></li>
+	<li><a href='create_vm.html'>Creating VMs</a></li>
+	<li><a href='faq.html'>F.A.Q.</a></li>
+      </ul>
+    </div>
+
+      <div id="main">
+	<h1>How to create Virtual Machines from scratch</h1>
+	<p>
+	  We've created a script that will help you create Virtual Disks images
+	  and docker images. This script is named 
+	  <span class="courier">create_imagevm</span>. You can obtain it by 
+	  cloning the following git repository: 
+	  <a href="https://github.com/CosyVerif/images">
+	    https://github.com/CosyVerif/images</a>. In order to use it, you have
+	  to download genvm, which is located on the CosyVerif's repository. 
+	  <a href='use_cosy_repo.html'>Here's how to do it</a>. You also have to
+	  install the package 
+	  <a href="https://docs.docker.com/installation/#installation">
+	    docker.io</a>.
+	</p>
+	
+	<p style='color:red;'>
+	  If you want to use that script you have to be root ! (or a least be 
+	  able to use the <span class="courier">sudo</span> command).
+	</p>
+	<p>
+	  The scripts works that way: first, it download an up-to-date debian 
+	  system (you can specify which version), make a 
+	  <a href='https://docs.docker.com/introduction/understanding-docker/'>
+	    docker</a> image out of it, and applies dockerfiles on it (you can
+	  choose which ones). You can modify the way the script behaves by 
+	  using a lot of options. Here's the list of all of them:
+	</p>
+	<ul style='list-style-type:decimal;'>
+	  <li><span class='courier' style='color:blue;font-size:19px;'>
+	      -a &lt;arch&gt;, --arch=ARCH, --architecture=ARCH
+	    </span><br/>
+	    Architecture of the thing you're going to create. It can either
+	    be <span class='courier'>amd64</span> or <span class='courier'>
+	      i386</span>. Default value: <span class="courier">amd64</span>.
+	  </li>	 
+	  <li><span class='courier' style='color:blue;font-size:19px;'>
+	      -b &lt;branch&gt;, --branch=BRANCH
+	    </span><br/>
+	    Branch of the thing you're going to create. This is the option
+	    that allows you to specify which dockerfiles you want to apply
+	    on the base docker image that will be used to create the virtual
+	    disk image at the end (or the docker image, if that's what you 
+	    want). <span style='color:red'>THIS OPTION IS MANDATORY UNLESS YOU
+	      USE <span class='courier'>--custom</span></span>. Keep in mind that
+	    Debian is always downloaded, unless you use <span class='courier'>
+	      --from</span> to specify a base image on which the script will
+	    apply all dockerfiles.
+	    This option must take one of the 9 following values:
+	    <ul style='list-style-type:upper-roman;'>
+	      <li><span class='courier' style='color:green;font-size:19px;'>
+		  debian
+		</span><br/>
+		This branch allows you to create a basic debian system, without
+		any kernel (unless you want to create a virtual disk image. In
+		that case, there will be one). There are no dockerfiles applied.
+	      </li>
+	      <li><span class='courier' style='color:green;font-size:19px;'>
+		  cosy
+		</span><br/>
+		This branch will allow you to create a virtual disk image (or
+		a docker image) with a kernel, and a user named cosy. The
+		dockerfiles applied are: 
+		<span class='courier' style='color:darkgoldenrod;'>
+		  without-recommends</span>,
+		<span class='courier' style='color:darkgoldenrod;'>
+		  with-kernel</span> and
+		<span class='courier' style='color:darkgoldenrod;'>
+		  with-cosy</span>. 
+	      </li>
+	      <li><span class='courier' style='color:green;font-size:19px;'>
+		  buildeb
+		</span><br/>
+		Creates a minimal virtual disk image (or docker image) with all
+		the dependencies of buildeb installed. Dockerfiles applied:
+ 		<span class='courier' style='color:darkgoldenrod;'>
+		  without-recommends</span>,
+		<span class='courier' style='color:darkgoldenrod;'>
+		  with-minimal</span> and
+		<span class='courier' style='color:darkgoldenrod;'>
+		  with-buildeb</span>. 
+	      </li>
+	      <li><span class='courier' style='color:green;font-size:19px;'>
+		  kernel
+		</span><br/>
+		Creates a virtual disk image (or a docker image) with a kernel.
+		Dockerfiles applied: 
+		<span class='courier' style='color:darkgoldenrod;'>
+		  with-kernel</span>.
+	      </li>
+	      <li><span class='courier' style='color:green;font-size:19px;'>
+		  minimal
+		</span><br/>
+		Creates a minimal virtual disk image (or docker image). It means
+		that there are no manpages and documentations. It also means that
+		when you're going to install a package, the packages marked as 
+		'recommended' by apt-get won't be installed (they normally are).
+		Dockerfiles applied:
+		<span class='courier' style='color:darkgoldenrod;'>
+		  without-recommends</span> and
+		<span class='courier' style='color:darkgoldenrod;'>
+		  with-minimal</span>.
+	      </li>
+	      <li><span class='courier' style='color:green;font-size:19px;'>
+		  repo
+		</span><br/>
+		Creates a minimal virtual disk image (or docker image) with a 
+		kernel and all the programs you need to setup a repository.
+		If you want to configure them correctly you have to fill the 
+		following files (they're all in the git repository):
+		<span class='courier'>
+		  data/home/repo/.ssh/authorized_keys, 
+		  data/etc/apache2/sites-available/repository, 
+		  data/home/repo/.dput.cf, 
+		  data/home/repo/.mini-dinstall.conf</span> and
+		<span class='courier'>
+		  data/home/repo/gpg-keygen.conf
+		</span>. <a href="create_buildcosy.html">Here's how to fill
+		  them</a>.<br/>
+		Dockerfiles applied: 
+		<span class='courier' style='color:darkgoldenrod;'>
+		  without-recommends</span>,
+		<span class='courier' style='color:darkgoldenrod;'>
+		  with-minimal</span>,
+		<span class='courier' style='color:darkgoldenrod;'>
+		  with-kernel</span> and
+		<span class='courier' style='color:darkgoldenrod;'>
+		  with-repo</span>.
+	      </li>
+	      <li><span class='courier' style='color:green;font-size:19px;'>
+		  jenkins-slave
+		</span><br/>
+		Creates a minimal virtual disk image (or docker image), which 
+		contains a kernel and all the software you need to setup a
+		jenkins slave. You might want to <a href='create_buildcosy.html'>
+		  read that</a> if you want to configure it right.
+		Dockerfiles applied:
+		<span class='courier' style='color:darkgoldenrod;'>
+		  without-recommends</span>,
+		<span class='courier' style='color:darkgoldenrod;'>
+		  with-minimal</span>,
+		<span class='courier' style='color:darkgoldenrod;'>
+		  with-kernel</span> and
+		<span class='courier' style='color:darkgoldenrod;'>
+		  with-jenkins-slave</span>.
+	      </li>
+	      <li><span class='courier' style='color:green;font-size:19px;'>
+		  without-recommends
+		</span><br/>
+		Create a virtual disk image (or a docker image) on which  
+		recommended packages won't be installed when you're using
+		apt-get. Dockerfiles applied:
+		<span class='courier' style='color:darkgoldenrod;'>
+		  without-recommends</span>.
+	      </li>
+	      <li><span class='courier' style='color:green;font-size:19px;'>
+		  custom:DOCKERFILES
+		</span><br/>
+		Create a custom virtual disk image (or docker image). With
+		that value, you can choose the dockerfiles that will be applied
+		on the base docker image, as long as they're all in the same
+		directory (which is <span class='courier'>dockerfiles/</span>,
+		if you don't use -d). The dockerfiles must be written like that:
+		<div class='code'>
+		  -b custom:dockerfile1,dockerfile2,...
+		</div>
+		For more informations about the dockerfiles in the directory
+		<span class='courier'>dockerfiles/</span>, see 
+		<span class='courier'>--custom</span> below 
+		(which is the same as using 
+		<span class='courier'>-b custom:DOCKERFILES</span>).
+	      </li>
+	    </ul>
+	  </li>	 
+	  <li><span class='courier' style='color:blue;font-size:19px;'>
+	      --custom=DOCKERFILES, --dockerfiles=DOCKERFILES
+	    </span><br/>
+	    List of dockerfiles you want to apply on the base docker image.
+	    The dockerfile list must be written like that:
+	    <div class='code'>
+	      --custom=dockerfile1,dockerfile2,...
+	    </div>
+	    The dockerfiles will be applied in the same order they appear on your
+	    list. <br/>
+	    The following dockerfiles are already in the default dockerfiles'
+	    directory (i.e. <span class='courier'>dockerfiles/</span>):
+	    <ul style='list-style-type:upper-roman;'>
+	      <li><span class='courier' style='color:darkgoldenrod;'>
+		  clean
+		</span><br/>
+		This dockerfile will remove unnecessary packages, all temporary
+		files and all *.deb files downloaded by apt-get. This
+		dockerfile is always executed before creating the final 
+		docker image (or  virtual disk image), so you don't really 
+		have to put it on your list.
+	      </li>
+	      <li><span class='courier' style='color:darkgoldenrod;'>
+		  install-extrapackages
+		</span><br/>
+		This dockerfile will install extra packages. If you want to 
+		use it you have to use <span class="courier">-p</span> 
+		(or <span class="courier">--packages</span>, 
+		<span class="courier">--install</span> ...) to 
+		define what packages you want to add. However, if you use 
+		<span class="courier">-p</span> (or 
+		<span class="courier">--package</span>, ...) the script will 
+		automatically execute this dockerfile right before creating
+		the final docker image/virtual	disk. If you want to execute 
+		it at another time, then you should put it in your list. 
+		In that case, the script won't execute it at the end.
+	      </li>
+	      <li><span class='courier' style='color:darkgoldenrod;'>
+		  remove-packages
+		</span><br/>
+		This dockerfile will remove packages. To indicate what packages 
+		you want to remove, you have to use 
+		<span class="courier">--remove-packages</span>. If you 
+		don't use it, no packages will be removed. Like 
+		install-extrapackage, this dockerfile is normally executed at 
+		the end of the script. If you want to execute it at another 
+		time, you should put it on your list.
+	      </li>
+	      <li><span class='courier' style='color:darkgoldenrod;'>
+		  with-buildeb
+		</span><br/>
+		This dockerfile will install all the dependencies of buildeb. 
+		It'll not install buildeb. 
+	      </li>
+	      <li><span class='courier' style='color:darkgoldenrod;'>
+		  with-cosy
+		</span><br/>
+		Dockerfile that creates an user named cosy.
+	      </li>
+	      <li><span class='courier' style='color:darkgoldenrod;'>
+		  with-jenkins-slave
+		</span><br/>
+		Dockerfile that install and configure all the software you need 
+		to create a jenkins slave. It installs buildeb, slave-cosy 
+		(which contains all the scripts needed to build and create 
+		packages via jenkins), docker.io and creates an user named 
+		'jenkins'. It also adds an authorized_keys file in the 
+		directory <span class="courier">/usr/home/jenkins/.ssh</span>
+		of the docker image/virtual disk. You can find this file in the 
+		directory <span class='courier'>data/home/jenkins/.ssh/</span>. 
+	      </li>
+	      <li><span class='courier' style='color:darkgoldenrod;'>
+		  with-kernel
+		</span><br/>
+		Dockerfile that compiles a linux kernel and install a 
+		bootloader. It also adds a password for root (which is toor). 
+		This dockerfile is mandatory if you want to create a vm. If you
+		don't put it on your list, this script will execute it 
+		anyway. Consider yourself warned.
+	      </li>
+	      <li><span class='courier' style='color:darkgoldenrod;'>
+		  with-minimal
+		</span><br/>
+		Dockerfile that forces apt-get to exclude some directories when
+		installing packages. Thus, apt-get won't be able to create 
+		files in those directories. The list of excluded directories 
+		can be found in	the file 
+		<span class="courier">data/etc/dpkg/dpkg.cfg.d/01_nodoc</span>.
+		This allows us to reduce the size of installed packages. 
+		This dockerfile also reinstalls	every packages installed (in 
+		order to apply those modifications to the packages that have 
+		already been installed). We recommend you to execute this 
+		dockerfile before any other dockerfile that may install
+		packages, because this one takes quite some time.
+	      </li>
+	      <li><span class='courier' style='color:darkgoldenrod;'>
+		  without-recommends
+		</span><br/>
+		This Dockerfile will force apt-get to never download and install
+		suggested or recommended packages (which aren't mandatory at 
+		all).
+	      </li>
+	      <li><span class='courier' style='color:darkgoldenrod;'>
+		  with-repo
+		</span><br/>
+		This Dockerfile installs and configures all the software you 
+		need to setup a debian repository. This includes: apache, 
+		mini-dinstall, and dput. The configuration files used to 
+		configure those softwares are located in 
+		<span class="courier">data/etc/apache2/sites-available/</span> 
+		(for apache2), <span class="courier">data/home/repo/.ssh</span>
+		(for ssh), and <span class="courier">data/home/repo/</span>
+		(for dput and mini-dinstall). We highly recommend you to look 
+		at those files and <a href='create_buildcosy.html'>fill them 
+		  correctly.</a> This dockerfile also creates an user named
+		'repo' and generates a key for the repo, which will be used 
+		to sign packages.
+	      </li>
+	    </ul>
+	  </li>	 
+	  <li><span class='courier' style='color:blue;font-size:19px;'>
+	      -c &lt;configuration_file&gt;, --configuration-file=FILE
+	    </span><br/>
+	    Path leading to a configuration file. It's not mandatory. If you 
+	    use one, every options after this one will be ignored. You can find
+	    one in the git repository. Its name is 
+	    <span class="courier">create_imagevm.conf.yml</span>
+	  </li>	 
+	  <li><span class='courier' style='color:blue;font-size:19px;'>
+	      -d &lt;directory&gt;, --directory=DIR, --dockerfiles-dir=DIR
+	    </span><br/>
+	    Path leading to the directory that contains all dockerfiles. Default
+	    value: ./dockerfiles.
+	  </li>	 
+	  <li><span class='courier' style='color:blue;font-size:19px;'>
+	      -D, --debug, --debug-mode
+	    </span><br/>
+	    Debug mode.
+	  </li>	 
+	  <li><span class='courier' style='color:blue;font-size:19px;'>
+	      -f &lt;format&gt;, --format=FORMAT, --vm-format=FORMAT, 
+	      --format-vm=FORMAT
+	    </span><br/>
+	    Type of virtual disk image to create. Can be one of these:
+	    vmdk, qcow2, qcow, raw. Default: vmdk.
+	    If you want to build a docker image, you must not use this option.
+	  </li>	 
+	  <li><span class='courier' style='color:blue;font-size:19px;'>
+	      -F &lt;image&gt;, --from=IMAGE
+	    </span><br/>
+	    Docker image on which all dockerfiles will be executed. Debian won't
+	    be downloaded in this case.
+	  </li>	 
+	  <li><span class='courier' style='color:blue;font-size:19px;'>
+	      -h, --help
+	    </span><br/>
+	    Print an help.
+	  </li>	 
+	  <li><span class='courier' style='color:blue;font-size:19px;'>
+	      -n &lt;name&gt;, --name=NAME
+	    </span><br/>
+	    Name you want to give to your virtual disk image (or docker image).
+	    <br/> Default value for a docker image:
+	    <span class='courier'>
+	      &lt;branch&gt;:&lt;Debianversion&gt;-&lt;arch&gt;
+	    </span><br/>
+	    Default value for a virtual disk image:
+	    <span class='courier'>
+	      &lt;branch&gt;.&lt;Debianversion&gt;.&lt;arch&gt;.&lt;vmformat&gt;
+	    </span>
+	  </li>	 
+	  <li><span class='courier' style='color:blue;font-size:19px;'>
+	      -p &lt;packages&gt;, --install=PACKAGES, --extra-packages=PACKAGES,
+	      --packages=PACKAGES
+	    </span><br/>
+	    List of packages you want to install in the resulting virtual 
+	    disk/docker image. The list of packages must be written like this: 
+	    <div class='code'>
+	      -p package1,package2,package3,...
+	    </div>
+	  </li>	 
+	  <li><span class='courier' style='color:blue;font-size:19px;'>
+	      -r &lt;yes/no&gt;, --remove=yes/no 
+	    </span><br/>
+	    (Do or Don't) Remove temporary docker images and files. Default 
+	    value: yes. It means that temporary files and docker images 
+	    will be removed
+	  </li>	 
+	  <li><span class='courier' style='color:blue;font-size:19px;'>
+	      -R &lt;repo&gt;, --repository=REPO, --repo=REPO, --cosy-repo=REPO
+	    </span><br/>
+	    Address of the debian repository where are located all the cosyverif
+	    related packages. It must follow this pattern: 
+	    <span class="courier"> &lt;repo_address&gt;,&lt;section&gt;</span>. 
+	    Default: <span class="courier">http://cosyverif-debian.lip6.fr 
+	      jessie-testing/</span><br/>
+	    <span style='color:red;'>&lt;section&gt; MUST be coherent with 
+	      the debian version you want to use.</span>
+	  </li>	 
+	  <li><span class='courier' style='color:blue;font-size:19px;'>
+	      --remove-packages=PACKAGES
+	    </span><br/>
+	    List of packages to remove in the virtual disk/docker image. The list
+	    must be in the written like this : 
+	    <div class='code'>
+	     --remove-packages=package1,package2,package3,...
+	    </div>
+	  </li>	 
+	  <li><span class='courier' style='color:blue;font-size:19px;'>
+	      -s &lt;size&gt;, --size=SIZE, --vmsize=SIZE, --sizevm=SIZE
+	    </span><br/>
+	    Size of the virtual disk image. Default: 
+	    <span class="courier">5G</span>.
+	  </li>	 
+	  <li><span class='courier' style='color:blue;font-size:19px;'>
+	      -t &lt;type&gt;, --type=TYPE
+	    </span><br/>
+	    What you want to create. &lt;type&gt; can be one of these:<br/>
+	    <span class="courier">image</span>: A docker image will be 
+	    created<br/>
+	    <span class="courier">vm</span>: A virtual disk image will be 
+	    created.<br/>
+	    <span style="color:red;">This option is mandatory.</span>
+	  </li>	 
+	  <li><span class='courier' style='color:blue;font-size:19px;'>	
+	      -v &lt;version&gt;, --version=VER, --debian-version=VER, 
+	      --release=VER
+	    </span><br/>
+	    Debian version you want to use to create your docker image or your
+	    virtual disk image. It must either be a release code name (squeeze,
+	    wheezy, ...) or a symbolic name (stable, testing, unstable, ...). 
+	    Default value: jessie.
+	  </li>	 
+	  <li><span class='courier' style='color:blue;font-size:19px;'>
+	      -V, --verbose, --verbose-mode
+	    </span><br/>
+	    Verbose Mode
+	  </li>	 
+	</ul>
+	
+	<p>
+	  Here are some examples of how you can use this script:
+	</p>
+	<div class='example'>
+	  <h4>Example 1</h4>
+	  Let's say you want to create a virtual disk image containing a jenkins
+	  slave, and you've filled the <span class="courier">authorized_keys
+	  </span>file correctly. Here's what you can do:
+	  <div class='code'>
+	    sudo ./create_imagevm -t vm -b jenkins-slave
+	  </div>
+	</div>
+	
+	<div class='example'>
+	  <h4>Example 2</h4>
+	  Let's say you want to create a custom virtual disk image with the
+	  following dockerfiles: <span class='courier'>
+	    with-kernel, with-buildeb, without-recommends</span>. Here's what 
+	  you can do:
+	  <div class='code'>
+	    sudo ./create_imagevm -t vm -b custom:with-kernel,with-buildeb,without-recommends
+	  </div>
+	  You can also do that:
+	  <div class='code'>
+	    sudo ./create_imagevm -t vm --custom=with-kernel,with-buildeb,without-recommends
+	  </div>
+	</div>
+	<div class='example'>
+	  <h4>Example 3</h4>
+	  Let's say that you already have a docker image named foo:bar, and you
+	  want to make a virtual disk image out of it. Here's what you should do:
+	  <div class='code'>
+	    sudo ./create_imagevm -t vm --custom= --from=foo:bar
+	  </div>
+	  As you may have noticied, there are no dockerfiles specified. This is
+	  not a mistake. However, the dockerfile 
+	  <span class='courier'>clean</span> will still be applied on foo:bar. 
+	</div>
+
+
+      </div>
+      <div id='footer'>
+	  Created by <a href='mailto:maxime.bittan@gmail.com'>Maxime Bittan </a>
+	<p style='margin-bottom:2px;'>
+	  <a href="http://validator.w3.org/check?uri=referer">
+	    <img  src="images/valid-xhtml11" alt="Valid XHTML 1.1" height="31" width="88" />
+	  </a>
+	  <a href="http://jigsaw.w3.org/css-validator/check/referer">
+	    <img style="border:0;width:88px;height:31px"
+           src="images/vcss"
+		 alt="Valid CSS!" />
+	  </a>
+	  
+	</p>
+      </div>
+  </body>
+</html>
